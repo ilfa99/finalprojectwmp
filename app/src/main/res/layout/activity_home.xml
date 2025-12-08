@@ -6,6 +6,7 @@
     android:background="@color/bg_grey">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNav">
@@ -87,8 +88,6 @@
                     android:background="@null"
                     android:hint="Search Specialist..."
                     android:textSize="14sp"
-                    android:focusable="false"
-                    android:clickable="true"
                     android:layout_toStartOf="@id/imgSearch"/>
 
                 <ImageView
@@ -139,8 +138,8 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@drawable/jantung"
                             android:layout_gravity="center"/>
                     </androidx.cardview.widget.CardView>
@@ -167,8 +166,8 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@drawable/bedah"
                             android:layout_gravity="center"/>
                     </androidx.cardview.widget.CardView>
@@ -195,8 +194,8 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/dalem"
                             android:layout_gravity="center"/>
                     </androidx.cardview.widget.CardView>
@@ -223,8 +222,8 @@
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
                         <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@drawable/ic_logo"
                             android:layout_gravity="center"/>
                     </androidx.cardview.widget.CardView>
@@ -289,7 +288,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dr. Ilfa Nur Fatimah"
+                            android:text="dr. Ilfa Nur Fatimah, Sp.B"
                             android:textStyle="bold"
                             android:textSize="16sp"/>
                         <TextView
@@ -323,6 +322,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="15dp"
+                android:layout_marginBottom="15dp"
                 android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground">
                 <LinearLayout
@@ -348,7 +348,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dr. Sarah Diana Vaulina Sitorus"
+                            android:text="dr. Sarah Diana Vaulina Sitorus, Sp.JP"
                             android:textStyle="bold"
                             android:textSize="16sp"/>
                         <TextView
@@ -407,7 +407,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dr. Annisa Regita Cahyani"
+                            android:text="dr. Annisa Regita Cahyani, Sp.PD"
                             android:textStyle="bold"
                             android:textSize="16sp"/>
                         <TextView
@@ -477,7 +477,7 @@
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:src="@drawable/search_icon"
-            app:tint="@color/cat_teal" />
+            app:tint="#8E88AB" />
 
         <ImageView
             android:id="@+id/navProfileBottom"

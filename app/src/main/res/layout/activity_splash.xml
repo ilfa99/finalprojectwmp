@@ -6,35 +6,38 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/intro_pic"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/intro_pic" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="575dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MyClinic App"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_dark"
             android:shadowColor="#80FFFFFF"
             android:shadowDx="2"
             android:shadowDy="2"
-            android:shadowRadius="5"/>
+            android:shadowRadius="5"
+            android:text="MyClinic App"
+            android:textColor="@color/blue_primary"
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your Health, Our Priority"
+            android:textColor="@color/text_dark"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_dark"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

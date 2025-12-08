@@ -96,10 +96,10 @@
                         android:id="@+id/tvDoctorNameDisplay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dr. Sarah Diana V.S"
-                        android:textStyle="bold"
+                        android:text="dr. Sarah Diana Vaulina Sitorus, Sp.JP"
+                        android:textColor="#1565C0"
                         android:textSize="18sp"
-                        android:textColor="#1565C0"/>
+                        android:textStyle="bold" />
                     <TextView
                         android:id="@+id/tvDoctorSpecialist"
                         android:layout_width="wrap_content"
