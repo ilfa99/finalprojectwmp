@@ -454,39 +454,39 @@
         <ImageView
             android:id="@+id/navHome"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_btn1"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/bottom_btn1" />
 
         <ImageView
             android:id="@+id/navSchedule"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_btn3"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/bottom_btn3" />
 
         <ImageView
             android:id="@+id/navChat"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@drawable/search_icon"
-            app:tint="@color/cat_teal"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/search_icon"
+            app:tint="@color/cat_teal" />
 
         <ImageView
             android:id="@+id/navProfileBottom"
             android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_btn4"
             android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/bottom_btn4" />
     </LinearLayout>
 
 </RelativeLayout>
