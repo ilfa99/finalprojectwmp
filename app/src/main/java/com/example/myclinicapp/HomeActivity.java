@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Tombol Lainnya
         btnNotification.setOnClickListener(v -> openDetail("Notifications"));
-        btnCatbedah.setOnClickListener(v -> openDetail("Dentistry"));
+        btnCatGigi.setOnClickListener(v -> openDetail("Dentistry"));
         btnCatSyaraf.setOnClickListener(v -> openDetail("Neurology"));
         btnCatTulang.setOnClickListener(v -> openDetail("Orthopedics"));
         btnSeeAll.setOnClickListener(v -> openDetail("All Doctors"));
