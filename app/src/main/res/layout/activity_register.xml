@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/intro_pic"
+        android:scaleType="centerCrop"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#F5FFFFFF"
+            app:cardElevation="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="30dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Account"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/blue_dark"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up to get started"
+                    android:textColor="@color/text_light"
+                    android:layout_marginBottom="30dp"/>
+
+                <EditText
+                    android:id="@+id/etRegUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:hint="New Username"
+                    android:paddingStart="20dp"
+                    android:background="@drawable/bg_input"
+                    android:layout_marginBottom="15dp"/>
+
+                <EditText
+                    android:id="@+id/etRegPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:hint="New Password"
+                    android:inputType="textPassword"
+                    android:paddingStart="20dp"
+                    android:background="@drawable/bg_input"
+                    android:layout_marginBottom="15dp"/>
+
+                <EditText
+                    android:id="@+id/etRegPassConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:paddingStart="20dp"
+                    android:background="@drawable/bg_input"
+                    android:layout_marginBottom="20dp"/>
+
+                <CheckBox
+                    android:id="@+id/cbAgree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree to terms &amp; conditions"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_light"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="start"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDoRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:text="SIGN UP"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_button"
+                    android:layout_marginBottom="15dp"/>
+
+                <TextView
+                    android:id="@+id/tvLoginLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account? Login here"
+                    android:textColor="@color/blue_primary"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+</RelativeLayout>
