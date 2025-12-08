@@ -7,6 +7,11 @@
     <color name="bg_grey">#F5F7FA</color>
     <color name="text_grey">#757575</color>
     <color name="stroke_grey">#E0E0E0</color>
-    <color name="cat_blue">#448AFF</color>    <color name="cat_teal">#00BCD4</color>    <color name="cat_purple">#9C27B0</color>  <color name="cat_orange">#FF9800</color>  <color name="text_dark">#212121</color>
+    <color name="cat_blue">#448AFF</color>
+    <color name="cat_teal">#00BCD4</color>
+    <color name="cat_purple">#9C27B0</color>
+    <color name="cat_orange">#FF9800</color>
+
+    <color name="text_dark">#212121</color>
     <color name="text_light">#9E9E9E</color>
 </resources>

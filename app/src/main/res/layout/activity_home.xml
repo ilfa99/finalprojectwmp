@@ -64,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/btnNotification"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/bell_icon"
                     android:padding="8dp"
                     android:background="@drawable/bg_search"
@@ -208,29 +208,34 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/btnCatComingSoon"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?android:attr/selectableItemBackground">
+
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/btnCatTulang"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         app:cardCornerRadius="15dp"
                         app:cardBackgroundColor="@color/white"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
+                        app:cardElevation="0dp">
+
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/ic_logo"
                             android:layout_gravity="center"/>
                     </androidx.cardview.widget.CardView>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Comming Soon"
+                        android:text="Coming Soon"
                         android:textSize="11sp"
                         android:layout_marginTop="5dp"/>
                 </LinearLayout>
