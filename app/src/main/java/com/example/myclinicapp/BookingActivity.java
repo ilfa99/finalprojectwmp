@@ -1,7 +1,7 @@
 package com.example.myclinicapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat; // Penting untuk mengubah warna teks
+import androidx.core.content.ContextCompat;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ public class BookingActivity extends AppCompatActivity {
     // Deklarasi Variabel UI
     EditText etName, etDoctor, etDate;
     TextView tvDoctorNameDisplay, tvDoctorSpecialist;
-    ImageView ivDoctorPhoto, ivHeaderBackground; // Header background ditambahkan
+    ImageView ivDoctorPhoto, ivHeaderBackground;
     RadioGroup rgGender;
     RadioButton rbSelected;
     Button btnConfirm;
@@ -30,12 +30,15 @@ public class BookingActivity extends AppCompatActivity {
     TextView chipDate1, chipDate2, chipDate3, chipDate4;
     TextView chipTime1, chipTime2, chipTime3;
 
+    // Variabel untuk menyimpan jam yang dipilih
+    String selectedTime = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
-        // --- 1. INISIALISASI ID DARI XML ---
+        // --- 1. INISIALISASI ID ---
         etName = findViewById(R.id.etName);
         etDoctor = findViewById(R.id.etDoctorName);
         etDate = findViewById(R.id.etDate);
@@ -47,7 +50,7 @@ public class BookingActivity extends AppCompatActivity {
         tvDoctorNameDisplay = findViewById(R.id.tvDoctorNameDisplay);
         tvDoctorSpecialist = findViewById(R.id.tvDoctorSpecialist);
         ivDoctorPhoto = findViewById(R.id.ivDoctorPhoto);
-        ivHeaderBackground = findViewById(R.id.ivHeaderBackground); // Inisialisasi Header
+        ivHeaderBackground = findViewById(R.id.ivHeaderBackground);
 
         // Chip Tanggal
         chipDate1 = findViewById(R.id.chipDate1);
@@ -63,7 +66,7 @@ public class BookingActivity extends AppCompatActivity {
         // --- 2. LOGIKA BACK BUTTON ---
         btnBack.setOnClickListener(v -> finish());
 
-        // --- 3. TANGKAP DATA DOKTER & GANTI GAMBAR ---
+        // --- 3. TANGKAP DATA DOKTER ---
         String incomingDoctor = getIntent().getStringExtra("DOCTOR_NAME");
         String incomingSpecialist = getIntent().getStringExtra("SPECIALIST");
 
@@ -74,23 +77,18 @@ public class BookingActivity extends AppCompatActivity {
 
             // Logika Ganti Foto Profil & Background Header
             if (incomingDoctor.contains("Ilfa")) {
-                // Dr. Ilfa -> Bedah
                 ivDoctorPhoto.setImageResource(R.drawable.dr_bedah);
                 ivHeaderBackground.setImageResource(R.drawable.dr_bedah);
             } else if (incomingDoctor.contains("Sarah")) {
-                // Dr. Sarah -> Jantung
                 ivDoctorPhoto.setImageResource(R.drawable.dr_jantung);
                 ivHeaderBackground.setImageResource(R.drawable.dr_jantung);
             } else {
-                // Default / Dr. Annisa -> Dalam
                 ivDoctorPhoto.setImageResource(R.drawable.dr_dalam);
                 ivHeaderBackground.setImageResource(R.drawable.dr_dalam);
             }
         }
 
         // --- 4. LOGIKA CHIP (PILIHAN JADWAL) ---
-
-        // Reset tampilan chip ke default saat pertama kali buka
         resetDateChips();
         resetTimeChips();
 
@@ -116,21 +114,21 @@ public class BookingActivity extends AppCompatActivity {
             etDate.setText("06/02/2025");
         });
 
-        // Listener untuk Chip Jam
+        // Listener untuk Chip Jam (Diperbarui untuk isi variabel selectedTime)
         chipTime1.setOnClickListener(v -> {
             resetTimeChips();
             setChipSelected(chipTime1);
-            Toast.makeText(this, "Time: 08:00 AM", Toast.LENGTH_SHORT).show();
+            selectedTime = "08:00 AM";
         });
         chipTime2.setOnClickListener(v -> {
             resetTimeChips();
             setChipSelected(chipTime2);
-            Toast.makeText(this, "Time: 10:00 AM", Toast.LENGTH_SHORT).show();
+            selectedTime = "10:00 AM";
         });
         chipTime3.setOnClickListener(v -> {
             resetTimeChips();
             setChipSelected(chipTime3);
-            Toast.makeText(this, "Time: 01:00 PM", Toast.LENGTH_SHORT).show();
+            selectedTime = "01:00 PM";
         });
 
         // --- 5. LOGIKA DATE PICKER MANUAL ---
@@ -143,7 +141,6 @@ public class BookingActivity extends AppCompatActivity {
             DatePickerDialog datePickerDialog = new DatePickerDialog(BookingActivity.this,
                     (view, year1, monthOfYear, dayOfMonth) -> {
                         etDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
-                        // Jika pilih manual, reset semua chip tanggal
                         resetDateChips();
                     }, year, month, day);
             datePickerDialog.show();
@@ -165,14 +162,16 @@ public class BookingActivity extends AppCompatActivity {
                 return;
             }
 
-            if(name.equals("") || date.equals("")) {
-                Toast.makeText(BookingActivity.this, "Please fill all details!", Toast.LENGTH_SHORT).show();
+            // Validasi input termasuk jam (selectedTime)
+            if(name.equals("") || date.equals("") || selectedTime.equals("")) {
+                Toast.makeText(BookingActivity.this, "Please fill all details and select time!", Toast.LENGTH_SHORT).show();
             } else {
-                Boolean checkInsert = DB.insertBooking(name, doctor, gender, date);
+                // Panggil insertBooking dengan 5 parameter
+                Boolean checkInsert = DB.insertBooking(name, doctor, gender, date, selectedTime);
+
                 if(checkInsert) {
                     Toast.makeText(BookingActivity.this, "Booking Successful!", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(BookingActivity.this, HomeActivity.class);
-                    // Clear activity stack agar tidak bisa back ke booking
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -183,25 +182,20 @@ public class BookingActivity extends AppCompatActivity {
         });
     }
 
-    // --- METODE BANTUAN UNTUK TAMPILAN CHIP ---
-
-    // Mengubah chip menjadi Hijau (Selected)
+    // --- METODE BANTUAN UI ---
     private void setChipSelected(TextView chip) {
-        // Pastikan Anda sudah membuat bg_chip_selected.xml di folder drawable
         chip.setBackgroundResource(R.drawable.bg_chip_selected);
         chip.setTextColor(ContextCompat.getColor(this, R.color.white));
     }
 
-    // Reset Chip Tanggal ke Putih (Default)
     private void resetDateChips() {
         TextView[] dateChips = {chipDate1, chipDate2, chipDate3, chipDate4};
         for (TextView chip : dateChips) {
-            chip.setBackgroundResource(R.drawable.bg_search); // bg_search = putih border abu
+            chip.setBackgroundResource(R.drawable.bg_search);
             chip.setTextColor(ContextCompat.getColor(this, R.color.text_dark));
         }
     }
 
-    // Reset Chip Jam ke Putih (Default)
     private void resetTimeChips() {
         TextView[] timeChips = {chipTime1, chipTime2, chipTime3};
         for (TextView chip : timeChips) {

@@ -14,7 +14,8 @@ public class ScheduleActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView btnBack;
     DatabaseHelper DB;
-    ArrayList<String> doctor, name, date;
+    // Tambahkan arrayList untuk time
+    ArrayList<String> doctor, name, date, time;
     BookingAdapter adapter;
 
     @Override
@@ -29,10 +30,12 @@ public class ScheduleActivity extends AppCompatActivity {
         doctor = new ArrayList<>();
         name = new ArrayList<>();
         date = new ArrayList<>();
+        time = new ArrayList<>(); // Inisialisasi
 
         storeDataInArrays();
 
-        adapter = new BookingAdapter(this, doctor, name, date);
+        // Masukkan time ke constructor adapter
+        adapter = new BookingAdapter(this, doctor, name, date, time);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -45,10 +48,11 @@ public class ScheduleActivity extends AppCompatActivity {
             Toast.makeText(this, "No Appointment Data.", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                // index 1=name, 2=doctor, 4=date (Sesuai urutan di DatabaseHelper)
+                // Urutan kolom: 0=id, 1=name, 2=doctor, 3=gender, 4=date, 5=time
                 name.add(cursor.getString(1));
                 doctor.add(cursor.getString(2));
                 date.add(cursor.getString(4));
+                time.add(cursor.getString(5)); // Ambil data jam
             }
         }
     }

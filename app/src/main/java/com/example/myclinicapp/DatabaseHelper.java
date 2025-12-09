@@ -11,13 +11,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DBNAME = "Clinic.db";
 
     public DatabaseHelper(Context context) {
-        super(context, "Clinic.db", null, 2);
+        super(context, "Clinic.db", null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create Table users(username TEXT primary key, password TEXT)");
-        db.execSQL("create Table bookings(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, doctor TEXT, gender TEXT, date TEXT)");
+        // Tabel dengan kolom time
+        db.execSQL("create Table bookings(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, doctor TEXT, gender TEXT, date TEXT, time TEXT)");
         db.execSQL("insert into users(username, password) values('admin', '12345')");
     }
 
@@ -48,13 +49,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // 3. CREATE BOOKING
-    public Boolean insertBooking(String name, String doctor, String gender, String date){
+    public Boolean insertBooking(String name, String doctor, String gender, String date, String time){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("doctor", doctor);
         contentValues.put("gender", gender);
         contentValues.put("date", date);
+        contentValues.put("time", time);
         long result = db.insert("bookings", null, contentValues);
         return result != -1;
     }
@@ -66,30 +68,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    // 5. UPDATE BOOKING (RESCHEDULE) - BARU!
-    public boolean updateBookingDate(String name, String doctor, String oldDate, String newDate) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("date", newDate);
-        long result = db.update("bookings", contentValues, "name=? and doctor=? and date=?", new String[]{name, doctor, oldDate});
-        return result != -1;
-    }
-
-    // 6. DELETE BOOKING
+    // 5. DELETE BOOKING
     public boolean deleteBooking(String name, String doctor, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete("bookings", "name=? and doctor=? and date=?", new String[]{name, doctor, date});
         return result != -1;
     }
 
-    // 7. UPDATE PASSWORD (EDIT PROFILE)
+    // 6. UPDATE PASSWORD
     public boolean updatePassword(String username, String newPassword) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("password", newPassword);
-
-        // Update tabel users dimana username-nya cocok
         long result = db.update("users", contentValues, "username = ?", new String[]{username});
+        return result != -1;
+    }
+
+    // --- FUNGSI BARU YANG DIBUTUHKAN UNTUK MEMPERBAIKI ERROR ---
+    public boolean updateBookingDateTime(String name, String doctor, String oldDate, String newDate, String newTime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("date", newDate);
+        contentValues.put("time", newTime); // Update juga jam-nya
+
+        // Update data berdasarkan nama, dokter, dan tanggal lama
+        long result = db.update("bookings", contentValues, "name=? and doctor=? and date=?", new String[]{name, doctor, oldDate});
         return result != -1;
     }
 }
