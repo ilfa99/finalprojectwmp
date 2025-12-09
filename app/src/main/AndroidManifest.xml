@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myclinicapp">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -40,6 +43,10 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity android:name=".BookingActivity" />
+        <activity android:name=".NotificationActivity" android:exported="false" />
+        <activity android:name=".EditProfileActivity" android:exported="false" />
+        <activity android:name=".AboutActivity" android:exported="false" />
+
     </application>
 
 </manifest>

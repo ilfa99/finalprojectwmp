@@ -81,4 +81,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.delete("bookings", "name=? and doctor=? and date=?", new String[]{name, doctor, date});
         return result != -1;
     }
+
+    // 7. UPDATE PASSWORD (EDIT PROFILE)
+    public boolean updatePassword(String username, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("password", newPassword);
+
+        // Update tabel users dimana username-nya cocok
+        long result = db.update("users", contentValues, "username = ?", new String[]{username});
+        return result != -1;
+    }
 }

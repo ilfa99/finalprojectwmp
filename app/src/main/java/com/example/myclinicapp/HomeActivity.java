@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences; // Import SharedPreferences
+import android.net.Uri; // Import Uri
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,20 +19,17 @@ import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity {
 
-    // --- UPDATED: Deklarasi Variabel ---
+    // Deklarasi Variabel
     CardView cardDoctor1, cardDoctor2, cardDoctor3;
-
-    // Hapus btnCatTulang dari baris CardView ini
     CardView btnProfileTop, btnCatJantung, btnCatGigi, btnCatSyaraf;
-
-    // Tambahkan deklarasi View khusus untuk tombol Coming Soon (karena di XML dia LinearLayout)
     View btnCatComingSoon;
 
-    ImageView btnNotification, navHome, navSchedule, navChat, navProfileBottom;
+    // Tambah variabel ivProfileHome
+    ImageView btnNotification, navHome, navSchedule, navChat, navProfileBottom, ivProfileHome;
     TextView btnSeeAll, tvUsername;
     EditText etSearch;
 
-    // Data Dokter Konsisten
+    // Data Dokter
     private static final String DR_ILFA = "dr. Ilfa Nur Fatimah, Sp.B";
     private static final String DR_SARAH = "dr. Sarah Diana Vaulina Sitorus, Sp.JP";
     private static final String DR_ANNISA = "dr. Annisa Regita Cahyani, Sp.PD";
@@ -43,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String SCH_SARAH = "Wed, Fri | 07:00 AM - 11:00 AM";
     private static final String SCH_ANNISA = "Tue, Sat | 09:00 AM - 03:00 PM";
 
+    String currentUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,9 @@ public class HomeActivity extends AppCompatActivity {
         // --- INISIALISASI WIDGET ---
         tvUsername = findViewById(R.id.tvUsername);
         etSearch = findViewById(R.id.etSearch);
+
+        // Inisialisasi Foto Profil Home
+        ivProfileHome = findViewById(R.id.ivProfileHome);
 
         // Dokter
         cardDoctor1 = findViewById(R.id.cardDoctor1);
@@ -64,8 +67,6 @@ public class HomeActivity extends AppCompatActivity {
         btnCatJantung = findViewById(R.id.btnCatJantung);
         btnCatGigi = findViewById(R.id.btnCatGigi);
         btnCatSyaraf = findViewById(R.id.btnCatSyaraf);
-
-        // --- UPDATED: Inisialisasi tombol Coming Soon dengan ID yang benar ---
         btnCatComingSoon = findViewById(R.id.btnCatComingSoon);
 
         btnSeeAll = findViewById(R.id.btnSeeAll);
@@ -76,26 +77,26 @@ public class HomeActivity extends AppCompatActivity {
         navChat = findViewById(R.id.navChat);
         navProfileBottom = findViewById(R.id.navProfileBottom);
 
-        String usernameLop = getIntent().getStringExtra("USERNAME");
-        if (usernameLop != null) {
-            tvUsername.setText("Hi, " + usernameLop);
+        // --- AMBIL DATA USERNAME ---
+        currentUsername = getIntent().getStringExtra("USERNAME");
+        if (currentUsername != null) {
+            tvUsername.setText("Hi, " + currentUsername);
+        } else {
+            currentUsername = "User";
         }
 
-        // --- LOGIKA PENCARIAN & FILTERING ---
+        // --- LOGIKA UTAMA ---
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filterDoctors(s.toString());
             }
-
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
-        // --- LOGIKA KLIK DOKTER & KATEGORI ---
         cardDoctor1.setOnClickListener(v -> openBooking(DR_ILFA, SPCL_SURGEON, SCH_ILFA));
         cardDoctor2.setOnClickListener(v -> openBooking(DR_SARAH, SPCL_CARDIO, SCH_SARAH));
         cardDoctor3.setOnClickListener(v -> openBooking(DR_ANNISA, SPCL_INTERNAL, SCH_ANNISA));
@@ -104,12 +105,13 @@ public class HomeActivity extends AppCompatActivity {
         btnCatGigi.setOnClickListener(v -> openBooking(DR_ILFA, SPCL_SURGEON, SCH_ILFA));
         btnCatSyaraf.setOnClickListener(v -> openBooking(DR_ANNISA, SPCL_INTERNAL, SCH_ANNISA));
 
-        // --- UPDATED: Listener untuk tombol Coming Soon ---
-        btnCatComingSoon.setOnClickListener(v -> openDetail("Orthopedics"));
-
-        // Tombol Lainnya
+        btnCatComingSoon.setOnClickListener(v -> openDetail("Coming Soon"));
         btnSeeAll.setOnClickListener(v -> openDetail("All Doctors"));
-        btnNotification.setOnClickListener(v -> openDetail("Notifications"));
+
+        btnNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+            startActivity(intent);
+        });
 
         navHome.setOnClickListener(v -> Toast.makeText(this, "You are already at Home", Toast.LENGTH_SHORT).show());
 
@@ -120,51 +122,59 @@ public class HomeActivity extends AppCompatActivity {
 
         navProfileBottom.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            intent.putExtra("USERNAME", currentUsername);
             startActivity(intent);
         });
 
         btnProfileTop.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            intent.putExtra("USERNAME", currentUsername);
             startActivity(intent);
         });
 
-        // --- LOGIKA IKON SEARCH BOTTOM NAV ---
         navChat.setOnClickListener(v -> {
             ScrollView scrollView = findViewById(R.id.scrollView);
-            if (scrollView != null) {
-                scrollView.smoothScrollTo(0, 0);
-            }
+            if (scrollView != null) scrollView.smoothScrollTo(0, 0);
             etSearch.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                etSearch.postDelayed(() -> {
-                    imm.showSoftInput(etSearch, InputMethodManager.SHOW_IMPLICIT);
-                }, 100);
+                etSearch.postDelayed(() -> imm.showSoftInput(etSearch, InputMethodManager.SHOW_IMPLICIT), 100);
             }
         });
     }
 
-    // --- FUNGSI UTAMA ---
+    // --- PENTING: DIPANGGIL SAAT HALAMAN MUNCUL KEMBALI ---
+    // Ini memastikan saat user balik dari Settings, foto di Home langsung berubah
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProfileImage();
+    }
+
+    // Fungsi memuat foto dari memori
+    private void loadProfileImage() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyClinicPrefs", MODE_PRIVATE);
+        String uriString = sharedPreferences.getString("profile_image_" + currentUsername, null);
+
+        if (uriString != null) {
+            try {
+                ivProfileHome.setImageURI(Uri.parse(uriString));
+            } catch (Exception e) {
+                ivProfileHome.setImageResource(R.drawable.profile);
+            }
+        }
+    }
+
     private void filterDoctors(String text) {
         String query = text.toLowerCase();
+        if (DR_ILFA.toLowerCase().contains(query) || SPCL_SURGEON.toLowerCase().contains(query)) cardDoctor1.setVisibility(View.VISIBLE);
+        else cardDoctor1.setVisibility(View.GONE);
 
-        if (DR_ILFA.toLowerCase().contains(query) || SPCL_SURGEON.toLowerCase().contains(query)) {
-            cardDoctor1.setVisibility(View.VISIBLE);
-        } else {
-            cardDoctor1.setVisibility(View.GONE);
-        }
+        if (DR_SARAH.toLowerCase().contains(query) || SPCL_CARDIO.toLowerCase().contains(query)) cardDoctor2.setVisibility(View.VISIBLE);
+        else cardDoctor2.setVisibility(View.GONE);
 
-        if (DR_SARAH.toLowerCase().contains(query) || SPCL_CARDIO.toLowerCase().contains(query)) {
-            cardDoctor2.setVisibility(View.VISIBLE);
-        } else {
-            cardDoctor2.setVisibility(View.GONE);
-        }
-
-        if (DR_ANNISA.toLowerCase().contains(query) || SPCL_INTERNAL.toLowerCase().contains(query)) {
-            cardDoctor3.setVisibility(View.VISIBLE);
-        } else {
-            cardDoctor3.setVisibility(View.GONE);
-        }
+        if (DR_ANNISA.toLowerCase().contains(query) || SPCL_INTERNAL.toLowerCase().contains(query)) cardDoctor3.setVisibility(View.VISIBLE);
+        else cardDoctor3.setVisibility(View.GONE);
 
         if (query.isEmpty()) {
             cardDoctor1.setVisibility(View.VISIBLE);

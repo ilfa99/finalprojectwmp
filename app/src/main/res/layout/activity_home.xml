@@ -32,7 +32,9 @@
                     android:layout_marginEnd="15dp"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
+
                     <ImageView
+                        android:id="@+id/ivProfileHome"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/profile"
