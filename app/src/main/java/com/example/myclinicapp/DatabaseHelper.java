@@ -95,4 +95,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.update("bookings", contentValues, "name=? and doctor=? and date=?", new String[]{name, doctor, oldDate});
         return result != -1;
     }
+
+    // ... kode fungsi lainnya ...
+
+    // 8. CEK KETERSEDIAAN JADWAL (Mencegah Double Booking)
+    public Boolean checkAppointmentExists(String doctor, String date, String time) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Query: Cari data booking di mana dokter, tanggal, DAN jam-nya sama
+        Cursor cursor = db.rawQuery("Select * from bookings where doctor = ? and date = ? and time = ?", new String[]{doctor, date, time});
+        boolean exists = cursor.getCount() > 0; // Jika > 0, berarti jadwal sudah ada
+        cursor.close();
+        return exists;
+    }
 }

@@ -114,7 +114,7 @@ public class BookingActivity extends AppCompatActivity {
             etDate.setText("06/02/2025");
         });
 
-        // Listener untuk Chip Jam (Diperbarui untuk isi variabel selectedTime)
+        // Listener untuk Chip Jam
         chipTime1.setOnClickListener(v -> {
             resetTimeChips();
             setChipSelected(chipTime1);
@@ -146,7 +146,8 @@ public class BookingActivity extends AppCompatActivity {
             datePickerDialog.show();
         });
 
-        // --- 6. TOMBOL KONFIRMASI BOOKING ---
+        // --- 6. TOMBOL KONFIRMASI BOOKING (UPDATED LOGIC) ---
+        // This is the correct place for the listener, inside onCreate
         btnConfirm.setOnClickListener(v -> {
             String name = etName.getText().toString();
             String doctor = etDoctor.getText().toString();
@@ -162,25 +163,35 @@ public class BookingActivity extends AppCompatActivity {
                 return;
             }
 
-            // Validasi input termasuk jam (selectedTime)
+            // Validasi input kosong
             if(name.equals("") || date.equals("") || selectedTime.equals("")) {
                 Toast.makeText(BookingActivity.this, "Please fill all details and select time!", Toast.LENGTH_SHORT).show();
             } else {
-                // Panggil insertBooking dengan 5 parameter
-                Boolean checkInsert = DB.insertBooking(name, doctor, gender, date, selectedTime);
 
-                if(checkInsert) {
-                    Toast.makeText(BookingActivity.this, "Booking Successful!", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(BookingActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                // --- LOGIKA BARU: CEK DOUBLE BOOKING ---
+                Boolean checkSlot = DB.checkAppointmentExists(doctor, date, selectedTime);
+
+                if (checkSlot) {
+                    // JIKA SLOT SUDAH ADA (True), TAMPILKAN PESAN ERROR
+                    Toast.makeText(BookingActivity.this, "This slot is already booked! Please choose another time.", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(BookingActivity.this, "Booking Failed!", Toast.LENGTH_SHORT).show();
+                    // JIKA SLOT KOSONG (False), BARU BOLEH SIMPAN
+                    Boolean checkInsert = DB.insertBooking(name, doctor, gender, date, selectedTime);
+
+                    if(checkInsert) {
+                        Toast.makeText(BookingActivity.this, "Booking Successful!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(BookingActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(BookingActivity.this, "Booking Failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-    }
+
+    } // --- END OF ONCREATE ---
 
     // --- METODE BANTUAN UI ---
     private void setChipSelected(TextView chip) {
